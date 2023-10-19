@@ -1,0 +1,9 @@
+select 
+  main.user_id,
+  cast(case when a.denom and b.nom is not null then b.nom/a.denom else 0 end as DECIMAL(10,2)) as confirmation_rate
+from Signups as main
+left join (select user_id, count(time_stamp) as denom from Confirmations group by user_id) as a
+on main.user_id = a.user_id
+left join (select user_id, count(time_stamp) as nom from Confirmations where action = 'confirmed' group by user_id) as b
+on main.user_id = b.user_id
+group by main.user_id
