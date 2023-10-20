@@ -1,0 +1,5 @@
+select 
+  round(count(distinct case when s1.second_date is not null then a.player_id end)/ count(distinct a.player_id), 2) as fraction
+from Activity as a
+left join (select player_id, date_add(min(event_date), interval 1 day) as second_date from Activity group by player_id) as s1
+on a.player_id = s1.player_id and a.event_date = s1.second_date
