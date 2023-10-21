@@ -1,0 +1,16 @@
+select  
+  c.product_id as product_id,
+  case when b.product_id is null then 10 else a.new_price end as price 
+from Products as a
+right join
+  (select 
+    product_id, 
+    max(change_date) as change_date
+  from Products 
+  where change_date<='2019-08-16' 
+  group by product_id)
+  as b
+on a.product_id = b.product_id and a.change_date = b.change_date
+right join (select distinct product_id from Products) as c
+on b.product_id = c.product_id
+group by c.product_id
