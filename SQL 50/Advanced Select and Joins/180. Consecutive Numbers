@@ -1,0 +1,6 @@
+select distinct a.num as ConsecutiveNums
+from Logs as a
+inner join (select num, id+1 as id_1 from Logs) as s1
+on a.id = s1.id_1 and a.num = s1.num
+inner join (select num, id+2 as id_2 from Logs) as s2
+on a.id = s2.id_2 and a.num = s2.num
