@@ -1,0 +1,9 @@
+select s1.person_name
+from 
+(select turn,
+  person_name, 
+  sum(weight) over (order by turn) as cum_weight
+from Queue) as s1
+where s1.cum_weight <= 1000
+order by s1.turn desc
+limit 1
